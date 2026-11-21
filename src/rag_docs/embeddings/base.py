@@ -21,4 +21,5 @@ class Embedder(Protocol):
 def l2_normalise(vectors: Vectors) -> Vectors:
     norms = np.linalg.norm(vectors, axis=1, keepdims=True)
     norms[norms == 0] = 1.0
-    return (vectors / norms).astype(np.float32)
+    normalised: Vectors = (vectors / norms).astype(np.float32)
+    return normalised
