@@ -83,11 +83,12 @@ class RAGPipeline:
     @classmethod
     def from_settings(cls, settings: Settings) -> RAGPipeline:
         llm = build_llm(settings)
-        reranker: Reranker = {
+        rerankers: dict[str, Reranker] = {
             "none": NoopReranker(),
             "lexical": LexicalReranker(),
             "llm": LLMReranker(llm),
-        }[settings.reranker]
+        }
+        reranker = rerankers[settings.reranker]
         return cls(
             store=build_store(settings),
             embedder=build_embedder(settings),

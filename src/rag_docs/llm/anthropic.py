@@ -1,6 +1,11 @@
 from __future__ import annotations
 
+from typing import Literal
+
 import anthropic
+from anthropic.types import MessageParam
+
+Effort = Literal["low", "medium", "high", "xhigh", "max"]
 
 
 class AnthropicLLM:
@@ -8,7 +13,7 @@ class AnthropicLLM:
         self,
         model: str = "claude-opus-5-5",
         client: anthropic.Anthropic | None = None,
-        effort: str = "low",
+        effort: Effort = "low",
     ) -> None:
         self.model = model
         self._client = client or anthropic.Anthropic()
@@ -17,11 +22,12 @@ class AnthropicLLM:
         self._effort = effort
 
     def complete(self, system: str, prompt: str, max_tokens: int = 1024) -> str:
+        messages: list[MessageParam] = [{"role": "user", "content": prompt}]
         response = self._client.messages.create(
             model=self.model,
             max_tokens=max_tokens,
             system=system,
-            messages=[{"role": "user", "content": prompt}],
+            messages=messages,
             output_config={"effort": self._effort},
         )
         if response.stop_reason == "refusal":

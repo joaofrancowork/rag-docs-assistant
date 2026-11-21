@@ -20,4 +20,6 @@ class FastEmbedEmbedder:
         return l2_normalise(np.asarray(list(self._model.embed(texts)), dtype=np.float32))
 
     def embed_query(self, text: str) -> Vectors:
-        return l2_normalise(np.asarray(list(self._model.query_embed(text)), dtype=np.float32))[0]
+        vectors = l2_normalise(np.asarray(list(self._model.query_embed(text)), dtype=np.float32))
+        vector: Vectors = vectors[0]
+        return vector

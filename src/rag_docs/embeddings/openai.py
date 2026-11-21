@@ -25,4 +25,5 @@ class OpenAIEmbedder:
         return l2_normalise(np.asarray(rows, dtype=np.float32))
 
     def embed_query(self, text: str) -> Vectors:
-        return self.embed_documents([text])[0]
+        vector: Vectors = self.embed_documents([text])[0]
+        return vector

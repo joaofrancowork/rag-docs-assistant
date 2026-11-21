@@ -42,4 +42,5 @@ class HashingEmbedder:
         return l2_normalise(out)
 
     def embed_query(self, text: str) -> Vectors:
-        return self.embed_documents([text])[0]
+        vector: Vectors = self.embed_documents([text])[0]
+        return vector

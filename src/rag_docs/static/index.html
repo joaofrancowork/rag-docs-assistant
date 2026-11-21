@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rag-docs-assistant</title>
+<style>
+  :root { --ink:#111; --muted:#666; --line:#e4e4e4; --bg:#fafafa; --card:#fff; --accent:#111; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--ink); background:var(--bg); }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; }
+  h1 { font-size: 22px; margin: 0; letter-spacing:-.01em; }
+  .meta { color: var(--muted); font-size: 13px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; margin-top:18px; }
+  .row { display:flex; gap:10px; }
+  input[type=text] { flex:1; padding:12px 14px; border:1px solid var(--line); border-radius:10px; font:inherit; }
+  button { padding:12px 18px; border:0; border-radius:10px; background:var(--accent); color:#fff; font:inherit; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:wait; }
+  .docs { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .chip { border:1px solid var(--line); border-radius:999px; padding:4px 10px; font-size:13px; }
+  .answer { font-size:16px; white-space:pre-wrap; }
+  .cite { display:block; border-left:3px solid var(--ink); padding:6px 10px; margin-top:10px; font-size:13px; color:#333; background:#f6f6f6; border-radius:0 8px 8px 0; }
+  .cite b { display:block; font-size:12px; color:var(--muted); font-weight:600; }
+  .stats { color:var(--muted); font-size:12px; margin-top:12px; }
+  label.upload { font-size:13px; color:var(--muted); cursor:pointer; text-decoration:underline; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>rag-docs-assistant</h1>
+    <span class="meta" id="health">connecting…</span>
+  </header>
+
+  <section class="card">
+    <div class="row">
+      <input id="q" type="text" placeholder="Ask a question about your documents…" autocomplete="off">
+      <button id="ask">Ask</button>
+    </div>
+    <div class="docs" id="docs"></div>
+    <p style="margin:12px 0 0"><label class="upload">Upload a PDF, TXT or MD<input id="file" type="file" accept=".pdf,.txt,.md" hidden></label></p>
+  </section>
+
+  <section class="card" id="result" hidden>
+    <div class="answer" id="answer"></div>
+    <div id="citations"></div>
+    <div class="stats" id="stats"></div>
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+async function refresh() {
+  const h = await fetch("/health").then((r) => r.json());
+  $("health").textContent = `${h.model} · ${h.embedder} · ${h.chunks} chunks`;
+  const docs = await fetch("/documents").then((r) => r.json());
+  $("docs").innerHTML = docs.map((d) => `<span class="chip">${esc(d.source)} · ${d.chunks}</span>`).join("");
+}
+
+async function ask() {
+  const question = $("q").value.trim();
+  if (question.length < 3) return;
+  $("ask").disabled = true;
+  try {
+    const res = await fetch("/query", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question }) });
+    const a = await res.json();
+    $("result").hidden = false;
+    $("answer").textContent = a.answer;
+    $("citations").innerHTML = a.citations.map((c) => `<span class="cite"><b>[${c.index}] ${esc(c.source)} · page ${c.page_number}</b>${esc(c.excerpt)}…</span>`).join("");
+    $("stats").textContent = `${a.retrieved.length} passages in context · ${a.latency_ms} ms · ${a.model}`;
+  } finally {
+    $("ask").disabled = false;
+  }
+}
+
+$("ask").onclick = ask;
+$("q").addEventListener("keydown", (e) => e.key === "Enter" && ask());
+$("file").onchange = async (e) => {
+  const body = new FormData();
+  body.append("file", e.target.files[0]);
+  const res = await fetch("/documents", { method: "POST", body });
+  if (!res.ok) alert((await res.json()).detail);
+  refresh();
+};
+refresh();
+</script>
+</body>
+</html>
