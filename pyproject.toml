@@ -1,0 +1,68 @@
+[project]
+name = "rag-docs-assistant"
+version = "0.1.0"
+description = "Retrieval-augmented question answering over PDFs, with hybrid search, reranking, swappable LLM providers and a built-in evaluation harness."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "João Pedro Franco" }]
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=1.0",
+    "fastapi>=0.115",
+    "numpy>=1.26",
+    "openai>=1.50",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.4",
+    "pypdf>=5.0",
+    "python-multipart>=0.0.9",
+    "uvicorn[standard]>=0.30",
+]
+
+[project.optional-dependencies]
+chroma = ["chromadb>=0.5"]
+local = ["fastembed>=0.4"]
+
+[project.scripts]
+rag-docs = "rag_docs.cli:main"
+
+[dependency-groups]
+dev = [
+    "fpdf2>=2.7",
+    "httpx>=0.27",
+    "mypy>=1.11",
+    "pre-commit>=3.8",
+    "pytest>=8.3",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_docs"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "N", "PTH"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+files = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --cov=rag_docs --cov-report=term-missing"
+
+[tool.coverage.run]
+omit = ["src/rag_docs/stores/chroma.py", "src/rag_docs/embeddings/fastembed.py"]
+
+[tool.coverage.report]
+fail_under = 85
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]
