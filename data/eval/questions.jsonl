@@ -1,0 +1,32 @@
+{"id": "q01", "question": "How many days of paid annual leave do full-time employees get?", "source": "northwind-employee-handbook.pdf", "page": 2, "must_include": ["25"]}
+{"id": "q02", "question": "Until when can carried-over holiday days be used?", "source": "northwind-employee-handbook.pdf", "page": 2, "must_include": ["31 March"]}
+{"id": "q03", "question": "How long is parental leave and is it paid?", "source": "northwind-employee-handbook.pdf", "page": 2, "must_include": ["20 weeks"]}
+{"id": "q04", "question": "Do I need a doctor's note if I am sick for two days?", "source": "northwind-employee-handbook.pdf", "page": 2, "must_include": ["3 days"]}
+{"id": "q05", "question": "What are the core working hours?", "source": "northwind-employee-handbook.pdf", "page": 1, "must_include": ["10:00", "16:00"]}
+{"id": "q06", "question": "How many people work at Northwind and where are the offices?", "source": "northwind-employee-handbook.pdf", "page": 1, "must_include": ["64"]}
+{"id": "q07", "question": "For how many days a year can I work from another country without approval?", "source": "northwind-employee-handbook.pdf", "page": 3, "must_include": ["90"]}
+{"id": "q08", "question": "How much money do new hires get to set up a home office?", "source": "northwind-employee-handbook.pdf", "page": 3, "must_include": ["900"]}
+{"id": "q09", "question": "What is the yearly learning budget per employee?", "source": "northwind-employee-handbook.pdf", "page": 4, "must_include": ["1,200"]}
+{"id": "q10", "question": "Who approves a training request of 500 euros?", "source": "northwind-employee-handbook.pdf", "page": 4, "must_include": ["head of department"]}
+{"id": "q11", "question": "When do salary reviews take place?", "source": "northwind-employee-handbook.pdf", "page": 4, "must_include": ["January"]}
+{"id": "q12", "question": "What is the daily limit for meals on business trips?", "source": "northwind-employee-handbook.pdf", "page": 5, "must_include": ["45"]}
+{"id": "q13", "question": "How soon after buying something must I submit the expense?", "source": "northwind-employee-handbook.pdf", "page": 5, "must_include": ["30 days"]}
+{"id": "q14", "question": "Which calendars can Northwind Booking connect to?", "source": "northwind-product-guide.pdf", "page": 1, "must_include": ["Google Calendar", "Microsoft 365"]}
+{"id": "q15", "question": "How much is the Growth plan per month?", "source": "northwind-product-guide.pdf", "page": 2, "must_include": ["79"]}
+{"id": "q16", "question": "What does plan ENT-42 include?", "source": "northwind-product-guide.pdf", "page": 2, "must_include": ["single sign-on"]}
+{"id": "q17", "question": "Is there a discount for paying yearly?", "source": "northwind-product-guide.pdf", "page": 2, "must_include": ["2 months"]}
+{"id": "q18", "question": "How far in advance are reminders sent by default?", "source": "northwind-product-guide.pdf", "page": 3, "must_include": ["24 hours"]}
+{"id": "q19", "question": "By how much did SMS reminders cut no-shows?", "source": "northwind-product-guide.pdf", "page": 3, "must_include": ["38%"]}
+{"id": "q20", "question": "Can a new customer get their money back?", "source": "northwind-product-guide.pdf", "page": 4, "must_include": ["30 days"]}
+{"id": "q21", "question": "How long does it take for a refund to arrive?", "source": "northwind-product-guide.pdf", "page": 4, "must_include": ["10 business days"]}
+{"id": "q22", "question": "What are the support hours?", "source": "northwind-product-guide.pdf", "page": 5, "must_include": ["08:00", "20:00"]}
+{"id": "q23", "question": "What is the first response target for critical incidents on Enterprise?", "source": "northwind-product-guide.pdf", "page": 5, "must_include": ["1-hour"]}
+{"id": "q24", "question": "Where is customer data stored?", "source": "northwind-security-and-privacy.pdf", "page": 1, "must_include": ["Frankfurt", "Dublin"]}
+{"id": "q25", "question": "Which encryption is used for data at rest?", "source": "northwind-security-and-privacy.pdf", "page": 1, "must_include": ["AES-256"]}
+{"id": "q26", "question": "What happens to our data after we cancel the subscription?", "source": "northwind-security-and-privacy.pdf", "page": 2, "must_include": ["30 days"]}
+{"id": "q27", "question": "How long are audit logs kept?", "source": "northwind-security-and-privacy.pdf", "page": 2, "must_include": ["13 months"]}
+{"id": "q28", "question": "How quickly are customers told about a personal data breach?", "source": "northwind-security-and-privacy.pdf", "page": 3, "must_include": ["48 hours"]}
+{"id": "q29", "question": "Which security certification does Northwind hold?", "source": "northwind-security-and-privacy.pdf", "page": 3, "must_include": ["ISO 27001"]}
+{"id": "q30", "question": "What is the stock price of Northwind Labs?", "source": null, "page": null, "must_include": []}
+{"id": "q31", "question": "Does Northwind offer a free plan for students?", "source": null, "page": null, "must_include": []}
+{"id": "q32", "question": "Who is the CEO of Northwind?", "source": null, "page": null, "must_include": []}
