@@ -74,6 +74,18 @@ def test_upload_validation(client: TestClient) -> None:
     )
 
 
+def test_request_id_is_generated_or_propagated(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    generated = client.get("/health").headers["X-Request-ID"]
+    assert len(generated) == 16
+    with caplog.at_level("INFO", logger="rag_docs.api"):
+        res = client.get("/health", headers={"X-Request-ID": "abc123"})
+    assert res.headers["X-Request-ID"] == "abc123"
+    line = next(r.getMessage() for r in caplog.records if "abc123" in r.getMessage())
+    assert "path=/health status=200" in line and "latency_ms=" in line
+
+
 def test_query_validation_and_ui(client: TestClient) -> None:
     assert client.post("/query", json={"question": "a"}).status_code == 422
     assert "rag-docs-assistant" in client.get("/").text

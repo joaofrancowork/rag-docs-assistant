@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import AsyncIterator
+import time
+import uuid
+from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, Request, UploadFile
+from fastapi import Depends, FastAPI, HTTPException, Request, Response, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
@@ -62,6 +64,28 @@ def create_app(settings: Settings | None = None, pipeline: RAGPipeline | None = 
         description="Ask questions about your PDFs and get cited answers.",
         lifespan=lifespan,
     )
+
+    @app.middleware("http")
+    async def request_context(
+        request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
+        request_id = request.headers.get("x-request-id") or uuid.uuid4().hex[:16]
+        started = time.perf_counter()
+        status = 500
+        try:
+            response = await call_next(request)
+            status = response.status_code
+            response.headers["X-Request-ID"] = request_id
+            return response
+        finally:
+            log.info(
+                "request_id=%s method=%s path=%s status=%d latency_ms=%.1f",
+                request_id,
+                request.method,
+                request.url.path,
+                status,
+                (time.perf_counter() - started) * 1000,
+            )
 
     @app.get("/health")
     def health(rag: Rag) -> dict[str, str | int]:
