@@ -1,0 +1,8 @@
+.venv
+.git
+.index
+reports
+tests
+docs
+**/__pycache__
+.env
